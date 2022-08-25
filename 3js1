@@ -1,0 +1,87 @@
+<body></body>
+<script src="/three.js"></script>
+<script>
+  // The "scene" is where stuff in our game will happen:
+  var scene = new THREE.Scene();
+  var flat = {flatShading: true};
+  var light = new THREE.AmbientLight('white', 0.1);
+  // scene.add(light);
+
+  // The "camera" is what sees the stuff:
+  var aspectRatio = window.innerWidth / window.innerHeight;
+  var camera = new THREE.PerspectiveCamera(75, aspectRatio, 1, 10000);
+  camera.position.z = 500;
+  scene.add(camera);
+
+  // The "renderer" draws what the camera sees onto the screen:
+  var renderer = new THREE.WebGLRenderer({antialias: true});
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  // ******** START CODING ON THE NEXT LINE ********
+  
+  var shape = new THREE.SphereGeometry(50, 10, 1);
+  var cover = new THREE.MeshPhongMaterial({wireframe: true});
+  var cover2 = new THREE.MeshPhongMaterial({wireframe: false, reflectivity: 5, specular: 5});
+  var ball = new THREE.Mesh(shape, cover);
+  var ball2 = new THREE.Mesh(shape, cover2);
+  cover.emissive.set('blue');
+  cover2.emissive.set('yellow');
+  scene.add(ball);
+  ball.position.set(0, 150, 0);
+  scene.add(ball2);
+  ball2.position.set(0, 150, 0);
+  
+  var shape = new THREE.PlaneGeometry(900, 900);
+  var cover = new THREE.MeshPhongMaterial({color: 'forestgreen'});
+  var ground = new THREE.Mesh(shape, cover);
+  ground.receiveShadow = true;
+  scene.add(ground);
+  ground.rotation.set(30, 0, 0);
+  
+  var shape = new THREE.TorusGeometry(100, 1, 50, 50, 6.29);
+  var cover = new THREE.MeshPhongMaterial({emissive: 'white'});
+  var donut = new THREE.Mesh(shape, cover);
+  var donut2 = new THREE.Mesh(shape, cover);
+  var donut3 = new THREE.Mesh(shape, cover);
+  donut.castShadow = true;
+  scene.add(donut);
+  donut.position.set(0, 150, 0);
+  scene.add(donut2);
+  donut2.position.set(0, 150, 0);
+  donut2.rotation.set(30, 0, 0);
+  scene.add(donut3);
+  donut3.position.set(0, 150, 0);
+  
+  var point = new THREE.PointLight('blue', 0.3);
+  point.position.set(0, 150, 0);
+  point.castShadow = true;
+  scene.add(point);
+  
+  var point2 = new THREE.PointLight('yellow', 0.3);
+  point2.position.set(0, 150, 0);
+  point2.castShadow = true;
+  scene.add(point2);
+  
+  var light = new THREE.AmbientLight('blue', 0.3);
+  scene.add(light);
+  
+  var clock = new THREE.Clock();
+  function animate() {
+    requestAnimationFrame(animate);
+    var t = clock.getElapsedTime();
+    
+    ball.rotation.set(t, t, 0);
+    ball2.rotation.set(t, t, 0);
+    donut.rotation.set(t, t, 0);
+    donut2.rotation.set(2*t, 3*t, 0);
+    donut3.rotation.set(3*t, 5*t, 0);
+    
+    renderer.render(scene, camera);
+  }
+  
+  animate();
+
+  // Now, show what the camera sees on the screen:
+  renderer.render(scene, camera);
+</script>
